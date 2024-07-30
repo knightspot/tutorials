@@ -33,18 +33,19 @@
     </dependencies>
 
     <build>
-        <finalName>lombok</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <properties>
         <hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
-        <delombok-maven-plugin.version>1.18.20.0</delombok-maven-plugin.version>
         <annotations.version>23.0.0</annotations.version>
     </properties>
 

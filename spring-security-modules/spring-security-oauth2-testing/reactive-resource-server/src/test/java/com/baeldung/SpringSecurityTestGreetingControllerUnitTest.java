@@ -3,8 +3,6 @@ package com.baeldung;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockAuthentication;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockJwt;
 
 import java.util.List;
 
@@ -16,6 +14,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
+import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.baeldung.ReactiveResourceServerApplication.GreetingController;
@@ -39,8 +38,8 @@ class SpringSecurityTestGreetingControllerUnitTest {
     /*-----------------------------------------------------------------------------*/
 
     @Test
-    void givenRequestIsAnonymous_whenGetGreet_thenUnauthorized() throws Exception {
-        api.mutateWith(mockAuthentication(ANONYMOUS_AUTHENTICATION))
+    void givenRequestIsAnonymous_whenGetGreet_thenUnauthorized() {
+        api.mutateWith(SecurityMockServerConfigurers.mockAuthentication(ANONYMOUS_AUTHENTICATION))
             .get()
             .uri("/greet")
             .exchange()
@@ -49,11 +48,12 @@ class SpringSecurityTestGreetingControllerUnitTest {
     }
 
     @Test
-    void givenUserIsAuthenticated_whenGetGreet_thenOk() throws Exception {
+    void givenUserIsAuthenticated_whenGetGreet_thenOk() {
         final var greeting = "Whatever the service returns";
         when(messageService.greet()).thenReturn(Mono.just(greeting));
 
-        api.mutateWith(mockJwt().authorities(List.of(new SimpleGrantedAuthority("admin"), new SimpleGrantedAuthority("ROLE_AUTHORIZED_PERSONNEL")))
+        api.mutateWith(SecurityMockServerConfigurers.mockJwt()
+            .authorities(List.of(new SimpleGrantedAuthority("admin"), new SimpleGrantedAuthority("ROLE_AUTHORIZED_PERSONNEL")))
             .jwt(jwt -> jwt.claim(StandardClaimNames.PREFERRED_USERNAME, "ch4mpy")))
             .get()
             .uri("/greet")
@@ -72,8 +72,8 @@ class SpringSecurityTestGreetingControllerUnitTest {
     /*---------------------------------------------------------------------------------------------------------------------*/
 
     @Test
-    void givenRequestIsAnonymous_whenGetSecuredRoute_thenUnauthorized() throws Exception {
-        api.mutateWith(mockAuthentication(ANONYMOUS_AUTHENTICATION))
+    void givenRequestIsAnonymous_whenGetSecuredRoute_thenUnauthorized() {
+        api.mutateWith(SecurityMockServerConfigurers.mockAuthentication(ANONYMOUS_AUTHENTICATION))
             .get()
             .uri("/secured-route")
             .exchange()
@@ -82,11 +82,12 @@ class SpringSecurityTestGreetingControllerUnitTest {
     }
 
     @Test
-    void givenUserIsGrantedWithRoleAuthorizedPersonnel_whenGetSecuredRoute_thenOk() throws Exception {
+    void givenUserIsGrantedWithRoleAuthorizedPersonnel_whenGetSecuredRoute_thenOk() {
         final var secret = "Secret!";
         when(messageService.getSecret()).thenReturn(Mono.just(secret));
 
-        api.mutateWith(mockJwt().authorities(new SimpleGrantedAuthority("ROLE_AUTHORIZED_PERSONNEL")))
+        api.mutateWith(SecurityMockServerConfigurers.mockJwt()
+            .authorities(new SimpleGrantedAuthority("ROLE_AUTHORIZED_PERSONNEL")))
             .get()
             .uri("/secured-route")
             .exchange()
@@ -97,8 +98,9 @@ class SpringSecurityTestGreetingControllerUnitTest {
     }
 
     @Test
-    void givenUserIsNotGrantedWithRoleAuthorizedPersonnel_whenGetSecuredRoute_thenForbidden() throws Exception {
-        api.mutateWith(mockJwt().authorities(new SimpleGrantedAuthority("admin")))
+    void givenUserIsNotGrantedWithRoleAuthorizedPersonnel_whenGetSecuredRoute_thenForbidden() {
+        api.mutateWith(SecurityMockServerConfigurers.mockJwt()
+            .authorities(new SimpleGrantedAuthority("admin")))
             .get()
             .uri("/secured-route")
             .exchange()
@@ -112,8 +114,8 @@ class SpringSecurityTestGreetingControllerUnitTest {
     /*---------------------------------------------------------------------------------------------------------*/
 
     @Test
-    void givenRequestIsAnonymous_whenGetSecuredMethod_thenUnauthorized() throws Exception {
-        api.mutateWith(mockAuthentication(ANONYMOUS_AUTHENTICATION))
+    void givenRequestIsAnonymous_whenGetSecuredMethod_thenUnauthorized() {
+        api.mutateWith(SecurityMockServerConfigurers.mockAuthentication(ANONYMOUS_AUTHENTICATION))
             .get()
             .uri("/secured-method")
             .exchange()
@@ -122,11 +124,12 @@ class SpringSecurityTestGreetingControllerUnitTest {
     }
 
     @Test
-    void givenUserIsGrantedWithRoleAuthorizedPersonnel_whenGetSecuredMethod_thenOk() throws Exception {
+    void givenUserIsGrantedWithRoleAuthorizedPersonnel_whenGetSecuredMethod_thenOk() {
         final var secret = "Secret!";
         when(messageService.getSecret()).thenReturn(Mono.just(secret));
 
-        api.mutateWith(mockJwt().authorities(new SimpleGrantedAuthority("ROLE_AUTHORIZED_PERSONNEL")))
+        api.mutateWith(SecurityMockServerConfigurers.mockJwt()
+            .authorities(new SimpleGrantedAuthority("ROLE_AUTHORIZED_PERSONNEL")))
             .get()
             .uri("/secured-method")
             .exchange()
@@ -137,8 +140,9 @@ class SpringSecurityTestGreetingControllerUnitTest {
     }
 
     @Test
-    void givenUserIsNotGrantedWithRoleAuthorizedPersonnel_whenGetSecuredMethod_thenForbidden() throws Exception {
-        api.mutateWith(mockJwt().authorities(new SimpleGrantedAuthority("admin")))
+    void givenUserIsNotGrantedWithRoleAuthorizedPersonnel_whenGetSecuredMethod_thenForbidden() {
+        api.mutateWith(SecurityMockServerConfigurers.mockJwt()
+            .authorities(new SimpleGrantedAuthority("admin")))
             .get()
             .uri("/secured-method")
             .exchange()

@@ -23,6 +23,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>ai.timefold.solver</groupId>
@@ -36,8 +37,6 @@
     </dependencies>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
         <version.ai.timefold.solver>1.4.0</version.ai.timefold.solver>
     </properties>
 

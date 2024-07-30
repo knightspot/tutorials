@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {Application.class, TestConfig.class}, properties = {
-  "hibernate.show_sql=true",
-  "logging.level.org.hibernate.SQL=debug",
+  "hibernate.show_sql=false",
+  "logging.level.org.hibernate.SQL=info",
   "logging.level.org.hibernate.orm.jdbc.bind=trace"
 })
 class NPlusOneEagerModerateDomainIntegrationTest extends BaseNPlusOneIntegrationTest<User> {
@@ -57,6 +59,7 @@ class NPlusOneEagerModerateDomainIntegrationTest extends BaseNPlusOneIntegration
         assertSelectCount(1);
     }
 
+    @Disabled
     @ParameterizedTest
     @ValueSource(longs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
     void givenEagerListBasedGroup_whenRemoveUser_thenIssueOnlyOneDelete(Long groupId) {

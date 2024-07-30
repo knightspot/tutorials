@@ -15,6 +15,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>${jakarta.persistence-api.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -76,6 +81,16 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.hypersistence</groupId>
+            <artifactId>hypersistence-utils-hibernate-62</artifactId>
+            <version>${hypersistence-utils.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>db-util</artifactId>
+            <version>${db.util.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -130,6 +145,9 @@
     <properties>
         <hypersistance-utils-hibernate-55.version>3.7.0</hypersistance-utils-hibernate-55.version>
         <postgresql.version>42.7.1</postgresql.version>
+        <db.util.version>1.0.7</db.util.version>
+        <hypersistence-utils.version>3.7.0</hypersistence-utils.version>
+        <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
     </properties>
 
 </project>

@@ -2,6 +2,7 @@ package com.baeldung.enablessldebug;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -18,14 +19,14 @@ public class SSLDebugLogger {
 
     public static void makeHttpsRequest() throws Exception {
         String url = "https://github.com/eugenp/tutorials";
-        URL httpsUrl = new URL(url);
+        URL httpsUrl = new URI(url).toURL();
         HttpsURLConnection connection = (HttpsURLConnection) httpsUrl.openConnection();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             String line;
-            logger.info("Response from " + url + ":");
+            logger.debug("Response from " + url + ":");
             while ((line = reader.readLine()) != null) {
-                logger.info(line);
+                logger.debug(line);
             }
         }
     }
